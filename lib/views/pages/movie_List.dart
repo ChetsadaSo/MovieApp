@@ -2,22 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:movie/controllers/movie_controller.dart';
+import 'package:movie/models/movie_model.dart';
 import 'package:movie/services/movie_service.dart';
 import 'package:movie/views/pages/movie_de.dart';
 
-class MovieList extends StatefulWidget {
-  const MovieList({Key? key}) : super(key: key);
-  @override
-  _MovieList createState() => _MovieList();
-}
+class MovieListPage extends StatelessWidget {
+  MovieListPage({Key? key}) : super(key: key);
 
-class _MovieList extends State<MovieList> {
-  @override
-  void initState() {
-    LoadMovie();
-    print('inttState');
-    super.initState();
-  }
+  final MovieController _controller = Get.put(MovieController(MovieService()));
 
   Row Rating(double rating) {
     return Row(
@@ -52,49 +44,41 @@ class _MovieList extends State<MovieList> {
     return SafeArea(
         child: Column(
       children: [
-        Expanded(child: GetX<MovieService>(builder: (controller) {
-          var cout = 0;
-          // print(controller.movie);
-          cout = cout + 1;
-          print(cout);
-          var data = controller.movie;
-          if (controller.movie.length != 0) {
-            return ListView.builder(
-                itemCount: data.length,
-                itemBuilder: (context, index) {
-                  return _buildCard(index, data);
-                });
-          } else {
-            return Column(
-              children: [
-                Center(
-                  child: CircularProgressIndicator(),
-                ),
-              ],
-            );
-          }
-        })),
+        Expanded(
+          child: FutureBuilder<List<Movie>>(
+              future: _controller.loadMovie(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData && snapshot.data != null) {
+                  final List<Movie> movies = snapshot.data!;
+                  return ListView.builder(
+                      itemCount: movies.length,
+                      itemBuilder: (context, index) {
+                        return _buildCard(index, movies);
+                      });
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              }),
+        ),
       ],
     ));
   }
 
-  InkWell _buildCard(int index, List<dynamic> data) {
+  InkWell _buildCard(int index, List<Movie> movies) {
     return InkWell(
       onDoubleTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => PostViewPage(index, data)),
-        );
-        print('print');
+        Get.to(PostViewPage(index, movies));
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListTile(
           leading: Image.network(
               "https://golang-api-basic.herokuapp.com/api/v1/movie/${index + 1}/image"),
-          title: Text("${data[index]["name"]}"),
-          subtitle: Rating((data[index]['rating'])),
-          trailing: Text(data[index]['year'].toString()),
+          title: Text(movies[index].name),
+          subtitle: Rating(movies[index].rating),
+          trailing: Text(movies[index].year.toString()),
         ),
       ),
     );

@@ -5,19 +5,20 @@
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
-Movie movieFromJson(String str) => Movie.fromJson(json.decode(str));
+MovieReponse movieReponseFromJson(String str) =>
+    MovieReponse.fromJson(json.decode(str));
 
-String movieToJson(Movie data) => json.encode(data.toJson());
+String movieReponseToJson(MovieReponse data) => json.encode(data.toJson());
 
-class Movie {
-  Movie({
+class MovieReponse {
+  MovieReponse({
     required this.data,
   });
 
-  final List<Datum> data;
+  final List<Movie> data;
 
-  factory Movie.fromJson(Map<String, dynamic> json) => Movie(
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+  factory MovieReponse.fromJson(Map<String, dynamic> json) => MovieReponse(
+        data: List<Movie>.from(json["data"].map((x) => Movie.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -25,8 +26,8 @@ class Movie {
       };
 }
 
-class Datum {
-  Datum({
+class Movie {
+  Movie({
     required this.id,
     required this.name,
     required this.rating,
@@ -40,8 +41,8 @@ class Datum {
   final String description;
   final int year;
 
-  factory Datum.fromJson(Map<String, dynamic> json) {
-    return Datum(
+  factory Movie.fromJson(Map<String, dynamic> json) {
+    return Movie(
       id: json["id"],
       name: json["name"],
       rating: json["rating"].toDouble(),
