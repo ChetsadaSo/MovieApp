@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:movie/models/movie_model.dart';
 
 class PostViewPage extends StatefulWidget {
   int index;
-  List<dynamic> movie;
+  List<Movie> movie;
   PostViewPage(this.index, this.movie);
   @override
   _PostViewPageState createState() => _PostViewPageState();
@@ -11,7 +12,7 @@ class PostViewPage extends StatefulWidget {
 class _PostViewPageState extends State<PostViewPage> {
   AppBar _buildAppBar() {
     return AppBar(
-      title: const Text('Movie'),
+      title: Text(widget.movie[widget.index].name),
     );
   }
 
@@ -27,17 +28,17 @@ class _PostViewPageState extends State<PostViewPage> {
     return ListView(children: [
       Container(
         child: Image.network(
-            'https://golang-api-basic.herokuapp.com/api/v1/movie/${widget.movie[widget.index]['id']}/image'),
+            'https://golang-api-basic.herokuapp.com/api/v1/movie/${widget.movie[widget.index].id}/image'),
       ),
       Container(
         child: Text(
-          widget.movie[widget.index]['name'],
+          widget.movie[widget.index].name,
           style: TextStyle(fontSize: 50),
         ),
       ),
       Container(
         child: Text(
-          widget.movie[widget.index]['description'].toString(),
+          widget.movie[widget.index].description.toString(),
           style: TextStyle(fontSize: 20),
         ),
       ),
