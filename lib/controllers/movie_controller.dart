@@ -6,9 +6,9 @@ class MovieController extends GetxController {
   MovieController(this._service);
 
   final MovieService _service;
-  List<Movie> movies = <Movie>[].obs;
+  List<Movie> ismovies = <Movie>[].obs;
   Future<List<Movie>> loadMovie() async {
-    movies = await _service.fetchMovie();
-    return movies;
+    ismovies = await _service.fetchMovie();
+    return ismovies;
   }
 }

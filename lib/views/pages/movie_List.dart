@@ -49,11 +49,10 @@ class MovieListPage extends StatelessWidget {
               future: _controller.loadMovie(),
               builder: (context, snapshot) {
                 if (snapshot.hasData && snapshot.data != null) {
-                  final List<Movie> movies = snapshot.data!;
                   return ListView.builder(
-                      itemCount: movies.length,
+                      itemCount: _controller.ismovies.length,
                       itemBuilder: (context, index) {
-                        return _buildCard(index, movies);
+                        return _buildCard(index, _controller.ismovies);
                       });
                 } else {
                   return const Center(

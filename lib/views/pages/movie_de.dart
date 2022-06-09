@@ -13,6 +13,7 @@ class _PostViewPageState extends State<PostViewPage> {
   AppBar _buildAppBar() {
     return AppBar(
       title: Text(widget.movie[widget.index].name),
+      backgroundColor: Colors.black,
     );
   }
 
@@ -20,26 +21,47 @@ class _PostViewPageState extends State<PostViewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
-      body: Body(),
+      body: _buildBody(),
+      backgroundColor: Colors.black,
     );
   }
 
-  ListView Body() {
+  ListView _buildBody() {
     return ListView(children: [
-      Container(
-        child: Image.network(
-            'https://golang-api-basic.herokuapp.com/api/v1/movie/${widget.movie[widget.index].id}/image'),
-      ),
-      Container(
-        child: Text(
-          widget.movie[widget.index].name,
-          style: TextStyle(fontSize: 50),
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          height: 450,
+          width: 100,
+          padding: EdgeInsets.all(2),
+          margin: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: NetworkImage(
+                      'https://golang-api-basic.herokuapp.com/api/v1/movie/${widget.movie[widget.index].id}/image')),
+              borderRadius: BorderRadius.all(Radius.circular(30)),
+              color: Color.fromARGB(255, 39, 38, 38)),
         ),
       ),
-      Container(
-        child: Text(
-          widget.movie[widget.index].description.toString(),
-          style: TextStyle(fontSize: 20),
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          child: Center(
+            child: Text(
+              widget.movie[widget.index].name,
+              style: TextStyle(fontSize: 50, color: Colors.white),
+            ),
+          ),
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          child: Text(
+            widget.movie[widget.index].description,
+            style: TextStyle(fontSize: 20, color: Colors.white),
+          ),
         ),
       ),
     ]);
